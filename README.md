@@ -2,7 +2,7 @@
 
 #### Overview
 
-In this project, we aim to train a gpt2 open source model on amazon review dataset.
+This project is aimed at building an NLP-powered platform for analyzing customer reviews, categorizing products, and generating blog-style summaries. Using existing pre-trained language models, the system performs sentiment analysis, product clustering, and generates informative summaries
 
 #### Project Organization
 
