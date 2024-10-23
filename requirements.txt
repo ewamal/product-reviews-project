@@ -70,7 +70,7 @@ namex==0.0.8
 nest-asyncio==1.6.0
 networkx==3.4.1
 nltk==3.7
-numpy==2.1.2
+numpy==1.23.5
 openai==0.28.0
 opt-einsum==3.3.0
 optree==0.12.1
