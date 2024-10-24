@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 const BlogPosts = () => {
+  // eslint-disable-next-line
   const [selectedCategory, setSelectedCategory] = useState('');
   const [blogPost, setBlogPost] = useState(null); // Store the generated blog post
 
@@ -29,45 +30,43 @@ const BlogPosts = () => {
         }
       );
       const data = await response.json();
-      setBlogPost(data); // Assuming this is how you set the blog post
+      setBlogPost(data);
     } catch (error) {
       console.error('Error:', error);
     }
   };
 
-  const extractSection = (content, start, end) => {
-    if (content && typeof content === 'string' && content.includes(start)) {
-      const splitStart = content.split(start);
-      if (splitStart.length > 1 && splitStart[1].includes(end)) {
-        return splitStart[1].split(end)[0].trim();
-      } else if (splitStart.length > 1) {
-        return splitStart[1].trim();
-      }
-    }
-    return 'No information available';
-  };
-
   return (
     <div>
-      <h1>Product Blog Posts</h1>
+      {/* Centered header and dropdown */}
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          marginBottom: '20px',
+        }}
+      >
+        <h1>Product Blog Posts</h1>
 
-      {/* Dropdown to select category */}
-      <div>
-        <label>Select Category:</label>
-        <select
-          onChange={(e) => {
-            const selected = e.target.value;
-            setSelectedCategory(selected);
-            fetchBlogPost(selected); // Trigger the API call here
-          }}
-        >
-          <option value="">Select a category</option>
-          {Object.values(categories).map((category, idx) => (
-            <option key={idx} value={category}>
-              {category}
-            </option>
-          ))}
-        </select>
+        {/* Dropdown to select category */}
+        <div>
+          <label>Select Category:</label>
+          <select
+            onChange={(e) => {
+              const selected = e.target.value;
+              setSelectedCategory(selected);
+              fetchBlogPost(selected); // Trigger the API call here
+            }}
+          >
+            <option value="">Select a category</option>
+            {Object.values(categories).map((category, idx) => (
+              <option key={idx} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Display the blog post */}
@@ -77,25 +76,32 @@ const BlogPosts = () => {
           <section>
             <h3>Product Overview</h3>
             <p>
-              {extractSection(
-                blogPost.blog_post,
-                '## Product Overview',
-                '## Key Features'
-              )}
+              {
+                blogPost.blog_post
+                  .split('## Product Overview')[1]
+                  .split('## Key Features')[0]
+              }
             </p>
           </section>
 
           <section>
             <h3>Key Features</h3>
             <p>
-              {extractSection(blogPost.blog_post, '## Key Features', '## Pros')}
+              {
+                blogPost.blog_post
+                  .split('## Key Features')[1]
+                  .split('## Pros')[0]
+              }
             </p>
           </section>
 
           <section>
             <h3>Pros</h3>
             <ul>
-              {extractSection(blogPost.blog_post, '## Pros', '## Cons')
+              {blogPost.blog_post
+                .split('## Pros')[1]
+                .split('## Cons')[0]
+                // eslint-disable-next-line
                 .replace(/[\[\]']+/g, '') // Remove brackets and single quotes
                 .split('\n- ')
                 .map((pros, idx) => (
@@ -107,7 +113,10 @@ const BlogPosts = () => {
           <section>
             <h3>Cons</h3>
             <ul>
-              {extractSection(blogPost.blog_post, '## Cons', '## Conclusion')
+              {blogPost.blog_post
+                .split('## Cons')[1]
+                .split('## Conclusion')[0]
+                // eslint-disable-next-line
                 .replace(/[\[\]']+/g, '') // Remove brackets and single quotes
                 .split('\n- ')
                 .map((cons, idx) => (
@@ -118,7 +127,7 @@ const BlogPosts = () => {
 
           <section>
             <h3>Conclusion</h3>
-            <p>{extractSection(blogPost.blog_post, '## Conclusion', '')}</p>
+            <p>{blogPost.blog_post.split('## Conclusion')[1]}</p>
           </section>
         </div>
       )}
