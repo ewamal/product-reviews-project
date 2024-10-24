@@ -4,6 +4,12 @@
 
 This project is aimed at building an NLP-powered platform for analyzing customer reviews, categorizing products, and generating blog-style summaries. Using existing pre-trained language models, the system performs sentiment analysis, product clustering, and generates informative summaries
 
+#### Deployment
+
+The backend is deployed on AWS and handles the blog post generation based on the product category. Accessible [here](https://dzym1rm5tj.execute-api.eu-north-1.amazonaws.com/staging).
+
+The frontend is a React-based web app deployed on Netlify. Accessible [here](https://storied-twilight-5e4414.netlify.app/)
+
 #### Project Organization
 
 ---
@@ -15,7 +21,8 @@ This project is aimed at building an NLP-powered platform for analyzing customer
 │  
 ├── notebooks <- Jupyter notebooks.
 │
-│
+├── backend
+├── blog-generator <- frontend
 ├── requirements.txt <- The requirements file for reproducing the analysis environment
 ```
 
