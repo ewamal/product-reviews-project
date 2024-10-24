@@ -35,42 +35,16 @@ const BlogPosts = () => {
     }
   };
 
-  // Function to split blog post content by sections
-  const parseBlogPost = (blogPostContent) => {
-    const sections = {
-      productOverview: '',
-      keyFeatures: '',
-      pros: [],
-      cons: [],
-      conclusion: '',
-    };
-
-    // Split the text by section headers (##)
-    const parts = blogPostContent.split('##');
-
-    parts.forEach((part) => {
-      if (part.includes('Product Overview')) {
-        sections.productOverview = part.replace('Product Overview', '').trim();
-      } else if (part.includes('Key Features')) {
-        sections.keyFeatures = part.replace('Key Features', '').trim();
-      } else if (part.includes('Pros')) {
-        const prosList = part.replace('Pros', '').trim();
-        sections.pros = prosList
-          .split('-')
-          .map((pro) => pro.trim())
-          .filter((pro) => pro);
-      } else if (part.includes('Cons')) {
-        const consList = part.replace('Cons', '').trim();
-        sections.cons = consList
-          .split('-')
-          .map((con) => con.trim())
-          .filter((con) => con);
-      } else if (part.includes('Conclusion')) {
-        sections.conclusion = part.replace('Conclusion', '').trim();
+  const extractSection = (content, start, end) => {
+    if (content && typeof content === 'string' && content.includes(start)) {
+      const splitStart = content.split(start);
+      if (splitStart.length > 1 && splitStart[1].includes(end)) {
+        return splitStart[1].split(end)[0].trim();
+      } else if (splitStart.length > 1) {
+        return splitStart[1].trim();
       }
-    });
-
-    return sections;
+    }
+    return 'No information available';
   };
 
   return (
@@ -103,31 +77,25 @@ const BlogPosts = () => {
           <section>
             <h3>Product Overview</h3>
             <p>
-              {
-                blogPost.blog_post
-                  .split('## Product Overview')[1]
-                  .split('## Key Features')[0]
-              }
+              {extractSection(
+                blogPost.blog_post,
+                '## Product Overview',
+                '## Key Features'
+              )}
             </p>
           </section>
 
           <section>
             <h3>Key Features</h3>
             <p>
-              {
-                blogPost.blog_post
-                  .split('## Key Features')[1]
-                  .split('## Pros')[0]
-              }
+              {extractSection(blogPost.blog_post, '## Key Features', '## Pros')}
             </p>
           </section>
 
           <section>
             <h3>Pros</h3>
             <ul>
-              {blogPost.blog_post
-                .split('## Pros')[1]
-                .split('## Cons')[0]
+              {extractSection(blogPost.blog_post, '## Pros', '## Cons')
                 .replace(/[\[\]']+/g, '') // Remove brackets and single quotes
                 .split('\n- ')
                 .map((pros, idx) => (
@@ -139,9 +107,7 @@ const BlogPosts = () => {
           <section>
             <h3>Cons</h3>
             <ul>
-              {blogPost.blog_post
-                .split('## Cons')[1]
-                .split('## Conclusion')[0]
+              {extractSection(blogPost.blog_post, '## Cons', '## Conclusion')
                 .replace(/[\[\]']+/g, '') // Remove brackets and single quotes
                 .split('\n- ')
                 .map((cons, idx) => (
@@ -152,7 +118,7 @@ const BlogPosts = () => {
 
           <section>
             <h3>Conclusion</h3>
-            <p>{blogPost.blog_post.split('## Conclusion')[1]}</p>
+            <p>{extractSection(blogPost.blog_post, '## Conclusion', '')}</p>
           </section>
         </div>
       )}
