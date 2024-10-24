@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)  # Allow all origins for simplicity (you can adjust as needed)
 
 # Hugging Face API URL and token
-HF_API_URL = "https://dzym1rm5tj.execute-api.eu-north-1.amazonaws.com/staging"
+HF_API_URL = "https://dzym1rm5tj.execute-api.eu-north-1.amazonaws.com/staging/api/generate_blog_post"
 HF_API_TOKEN = os.getenv("HF_API_TOKEN")
 headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
 
@@ -77,6 +77,9 @@ def generate_blog_post_by_category():
     product_name = top_product['name']
     product_category = categories[category_id]
 
+    image_urls = top_product['imageURLs'].split(',')
+    image_url = image_urls[0].strip() if image_urls else None
+
     # Get pros and cons for the product
     entry = next(
         (item for item in pros_cons_list if item['product_name'] == product_name), None)
@@ -125,7 +128,9 @@ def generate_blog_post_by_category():
 
         return jsonify({
             'product_name': product_name,
-            'blog_post': blog_post
+            'blog_post': blog_post,
+            'image_url': image_url
+
         })
 
     return jsonify({"error": "Product not found for this category"}), 404
