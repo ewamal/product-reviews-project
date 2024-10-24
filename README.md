@@ -6,7 +6,7 @@ This project is aimed at building an NLP-powered platform for analyzing customer
 
 #### Deployment
 
-The backend is deployed on AWS and handles the blog post generation based on the product category. Accessible [here](https://dzym1rm5tj.execute-api.eu-north-1.amazonaws.com/staging).
+The backend is deployed on AWS and handles the blog post generation based on the product category.
 
 The frontend is a React-based web app deployed on Netlify. Accessible [here](https://storied-twilight-5e4414.netlify.app/)
 
