@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)  # Allow all origins for simplicity (you can adjust as needed)
 
 # Hugging Face API URL and token
-HF_API_URL = "https://api-inference.huggingface.co/models/gpt2"
+HF_API_URL = "https://dzym1rm5tj.execute-api.eu-north-1.amazonaws.com/staging"
 HF_API_TOKEN = os.getenv("HF_API_TOKEN")
 headers = {"Authorization": f"Bearer {HF_API_TOKEN}"}
 
