@@ -36,6 +36,14 @@ const BlogPosts = () => {
     }
   };
 
+  const safelyGetSection = (content, startMarker, endMarker) => {
+    if (!content) return '';
+    const start = content.split(startMarker)[1];
+    if (!start) return '';
+    const end = start.split(endMarker)[0];
+    return end ? end.trim() : '';
+  };
+
   return (
     <div>
       {/* Centered header and dropdown */}
@@ -70,39 +78,36 @@ const BlogPosts = () => {
       </div>
 
       {/* Display the blog post */}
-      {blogPost && (
+      {blogPost && blogPost.blog_post && (
         <div className="blog-post">
           <h2>{blogPost.product_name}</h2>
           <section>
             <h3>Product Overview</h3>
             <p>
-              {
-                blogPost.blog_post
-                  .split('## Product Overview')[1]
-                  .split('## Key Features')[0]
-              }
+              {safelyGetSection(
+                blogPost.blog_post,
+                '## Product Overview',
+                '## Key Features'
+              )}
             </p>
           </section>
 
           <section>
             <h3>Key Features</h3>
             <p>
-              {
-                blogPost.blog_post
-                  .split('## Key Features')[1]
-                  .split('## Pros')[0]
-              }
+              {safelyGetSection(
+                blogPost.blog_post,
+                '## Key Features',
+                '## Pros'
+              )}
             </p>
           </section>
 
           <section>
             <h3>Pros</h3>
             <ul>
-              {blogPost.blog_post
-                .split('## Pros')[1]
-                .split('## Cons')[0]
-                // eslint-disable-next-line
-                .replace(/[\[\]']+/g, '') // Remove brackets and single quotes
+              {safelyGetSection(blogPost.blog_post, '## Pros', '## Cons')
+                .replace(/[[\]']+/g, '') // Remove brackets and single quotes
                 .split('\n- ')
                 .map((pros, idx) => (
                   <li key={idx}>{pros}</li>
@@ -113,11 +118,8 @@ const BlogPosts = () => {
           <section>
             <h3>Cons</h3>
             <ul>
-              {blogPost.blog_post
-                .split('## Cons')[1]
-                .split('## Conclusion')[0]
-                // eslint-disable-next-line
-                .replace(/[\[\]']+/g, '') // Remove brackets and single quotes
+              {safelyGetSection(blogPost.blog_post, '## Cons', '## Conclusion')
+                .replace(/[[\]']+/g, '') // Remove brackets and single quotes
                 .split('\n- ')
                 .map((cons, idx) => (
                   <li key={idx}>{cons}</li>
@@ -127,7 +129,7 @@ const BlogPosts = () => {
 
           <section>
             <h3>Conclusion</h3>
-            <p>{blogPost.blog_post.split('## Conclusion')[1]}</p>
+            <p>{safelyGetSection(blogPost.blog_post, '## Conclusion', '')}</p>
           </section>
         </div>
       )}
