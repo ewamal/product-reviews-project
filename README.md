@@ -1,4 +1,4 @@
-### Product Review Generation using GPT-2
+### Blog Posts Generation using GPT-2
 
 #### Overview
 
